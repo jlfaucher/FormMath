@@ -1,0 +1,142 @@
+% :encoding=IBM437:indentSize=8:tabSize=8:
+% To insert in the file ARITH.MUS %
+
+%---------------------------------------------------------------------------------------------------------------------------------%
+%	 * * *   muMATH Algebraic Print Routines   * * *	%
+
+
+PROPERTY FORMMATH, +, FUNCTION (LEX1#,
+    % Local: %	EX1#, LEX2#),
+  % Affiche une liste de la forme (+ e1 e2 ...) avec LEX1# = (e1 e2 ...) %
+
+  LEX2#: FORMMATH (POP(LEX1#), 0, GET('LBP,'+)),    % Affiche le 1er op‚rande %
+  LOOP
+    LEX2#: HFORM (LEX2#, FORMSPACE ()), 	    % Un espace avant le + ou le - %
+    BLOCK
+      WHEN NEGCOEF (EX1#:POP(LEX1#)),		    % ¿ 							     %
+	LEX2#: HFORM (LEX2#, FORMNAME ('-)),        % ³ Si ‚l‚ment courant < 0 alors affiche '-' et inverse le signe %
+	EX1#: -EX1# EXIT,			    % ³     ainsi x + -y est affich‚ x - y			     %
+      LEX2#: HFORM (LEX2#, FORMNAME ('+)),          % Ù sinon affiche '+'                                            %
+    ENDBLOCK,
+    LEX2#: HFORM (LEX2#, FORMSPACE ()), 	    % Un espace aprŠs le + ou le - %
+    WHEN ATOM (LEX1#) EXIT,			    % Si fin de liste des arguments de +  %
+    LEX2#: HFORM (LEX2#, FORMMATH (EX1#, GET('RBP,'+), GET('LBP,'+)))	% Affiche l'‚l‚ment courant  %
+  ENDLOOP,
+  FORMPAR ('+, HFORM (LEX2#, FORMMATH (EX1#, GET('RBP,'+)))),   % Affiche le dernier ‚l‚ment et entoure le tout de parenthŠses %
+ENDFUN$ 							% si n‚cessaire %
+
+
+PROPERTY FORMMATH, *, FUNCTION (LEX1#,
+    % Local: %	EX1#, EX2#, EX3#, NUMNUM, DENNUM),
+  % Affiche (* e1 e2 ... en) avec LEX1# = (e1 e2 ...) %
+
+  NUMNUM: DENNUM: 0,
+  EX1#: COEFF (EX2#: ADJOIN ('*, LEX1#)),           % EX1 <-- coef num‚rique du produit. EX2 <-- forme complŠte du produit. %
+  BLOCK
+    WHEN NOT INTEGER (þ*PRINT-POINT*) AND ONE (ABS (NUM (EX1#))),   % Si les rationnels doivent ˆtre affich‚s sous forme de %
+      EX1#: NUM (EX1#), 					    % fraction et si forme ñ1/n e1 e2 ... alors EX1 <-- ñ1  %
+      EX2#: EX1#*EX2# EXIT,	 % Ex: -«x affich‚ -x/2 %	    % et EX2 <-- ñexpr					    %
+    EX2#: CODIV (EX2#), 					    % sinon EX1 <-- coef et EX2 <--codiv		    %
+  ENDBLOCK,
+  BLOCK
+    WHEN PRTSLASH,				    % Si PRTSLASH alors d‚compose EX2 en NUM et DEN %
+      EX3#: DEN (EX2#), 			    %					 EX2	EX3 %
+      EX2#: NUM (EX2#) EXIT,
+    EX3#: 1,					    % sinon EX2 inchang‚ et EX3 <-- 1		    %
+  ENDBLOCK,
+  %				num	  EX2	%
+  % Ici expr d‚compos‚e en coef --- = EX1 ---	%
+  %				den	  EX3	%
+  WHEN ONE (EX3#),				    % Si d‚nominateur = 1 ¿		  num  %
+    WHEN INTEGER (EX1#),			    %			  ³ si forme -1 * ---  %
+      WHEN MINUS1 (EX1#),			    % Si coef = -1	  Ù		   1   %
+	WHEN PRODUCT (EX2#),			    % Si num est un produit alors le signe est associ‚ au 1er op‚rande de * %
+	  FORMPAR ('*, FORMOPER ('*, ADJOIN (LIST('-,SECOND(EX2#)), RREST(EX2#)))), % -1*(e1 e2 ...) --> -e1 e2 ...         %
+	  EXIT,
+	FORMMATH (LIST ('-, EX2#), RBP, LBP),       % Si num n'est pas un produit alors affiche -num %
+	EXIT EXIT,
+    WHEN PRODUCT (EX2#),			    % Si num est un produit alors inclut le coef dans le produit %
+      FORMPAR ('*, FORMOPER ('*, ADJOIN (EX1#, REST (EX2#)))),	% n*(e1 e2 ...) --> n e1 e2 ... 		 %
+      EXIT,
+    FORMPAR ('*, FORMOPER ('*, LIST (EX1#, EX2#))), % Si num n'est pas un produit alors affiche n*num %
+    EXIT,					    %					 coef * num  %
+  FORMMATH (LIST ('/, EX1#*EX2#, EX3#), RBP, LBP),  % Ici d‚nominateur <> 1 donc affiche ----------  %
+ENDFUN$ 					    %					    den      %
+
+
+PROPERTY FORMMATH, /, FUNCTION (LEX1#,
+    % Local: % EX1#, EX2#, LEX2#, EX3#),
+  % Affiche (/ e1 e2) avec LEX1# = (e1 e2) %
+
+  WHEN FORMMATH OR FORMMATHDEF,
+    % Si formatage d'une expression math‚matique ou formatage math‚matique forc‚ d'une d‚finition de fonction %
+    EX1#: FIRST (LEX1#),
+    EX2#: SECOND (LEX1#),
+    WHEN ATOM (EX1#) AND ATOM (EX2#), FALSE EXIT,
+    EX1#: FORMMATH (EX1#),
+    EX2#: FORMMATH (EX2#),
+    BLOCK
+      WHEN SECOND (EX1#) < SECOND (EX2#),
+        EX1#: FORMINDENT (EX1#, TRUNCATE ((SECOND (EX2#) - SECOND (EX1#)) / 2)),
+        LEX2#: HFORMNAMEDUP ('Ä, SECOND (EX2#)), EXIT,
+      EX2#: FORMINDENT (EX2#, TRUNCATE ((SECOND (EX1#) - SECOND (EX2#)) / 2)),
+      LEX2#: HFORMNAMEDUP ('Ä, SECOND (EX1#)),
+    ENDBLOCK,
+    EX3#: FIRST (EX1#) + 1,
+    LEX1#: VFORM (EX1#, LEX2#, EX2#),
+    REPLACE3RD (LEX1#, EX3#),
+    REPLACE4TH (LEX1#, EX3#),
+    LEX1#, EXIT,
+ENDFUN$
+
+
+PROPERTY FORMMATH, ^, FUNCTION (LEX1#,
+    % Local: %	EX1#, EX2#, EX3#, EX4#),
+  % Affiche (^ e1 e2)  avec LEX1# = (e1 e2) %
+
+  EX1#: FIRST (LEX1#),				    % EX1# <-- e1 %
+  WHEN NEGCOEF (EX2#:SECOND(LEX1#)) AND PRTSLASH,   % EX2# <-- e2 %
+    WHEN MINUS1 (EX2#), 				    % ¿ Si forme (^ e1 -1) et PRTSLASH alors affiche 1/e1    %
+      FORMMATH (LIST ('/, 1, EX1#), RBP, LBP),              % ³                                                      %
+      EXIT,						    % ³ 						     %
+    FORMMATH (LIST ('/, 1, LIST('^,EX1#,-EX2#)), RBP, LBP), % Ù sinon affiche 1/(e1^-e2)			     %
+    EXIT,
+  WHEN EX2# EQL 1/2,				    % Si racine carr‚e %
+    FORMMATH (LIST ('û, EX1#), RBP, LBP),
+    EXIT,
+  WHEN FORMMATH OR FORMMATHDEF,
+    % Si formatage d'une expression math‚matique ou formatage math‚matique forc‚ d'une d‚finition de fonction %
+    EX1#: FORMMATH (EX1#, 0, GET ('LBP, '^)),
+    EX2#: FORMINDENT (FORMMATH (EX2#, GET ('RBP, '^)), SECOND (EX1#)),
+    EX3#: FIRST (EX2#) + THIRD (EX1#),
+    EX4#: FIRST (EX2#) + FOURTH (EX1#),
+    LEX1#: VFORM (EX2#, EX1#),
+    REPLACE3RD (LEX1#, EX3#),
+    REPLACE4TH (LEX1#, EX4#),
+    LEX1#, EXIT,
+ENDFUN$
+
+
+PROPERTY FORMMATH, û, FUNCTION (LEX1#,
+    % Local: % LEX2#, EX1#, EX2#),
+  % Affiche (û expr) avec LEX1# = (expr) %
+
+  WHEN FORMMATH OR FORMMATHDEF,
+    % Si formatage d'une expression math‚matique ou formatage math‚matique forc‚ d'une d‚finition de fonction %
+    LEX1#: FORMMATH (FIRST (LEX1#)),
+    EX1#: THIRD (LEX1#),
+    EX2#: FOURTH (LEX1#),
+    LEX2#: VFORM (FORMNAME ('Ú),
+                  VFORMNAMEDUP ('³, FIRST (LEX1#) - 1),
+                  FORMNAME ('û)),
+    REPLACE3RD (LEX2#, FOURTH (LEX2#)),
+    LEX2#: HFORM (FORMNAME ('\\), LEX2#),
+    REPLACE4TH (LEX2#, 1),
+    LEX1#: HFORM (LEX2#, VFORM (HFORMNAMEDUP ('Ä, SECOND (LEX1#)),
+                                LEX1#)),
+    REPLACE3RD (LEX1#, EX1# + 1),
+    REPLACE4TH (LEX1#, EX2# + 1),
+    LEX1#, EXIT,
+ENDFUN$
+
+RDS () $

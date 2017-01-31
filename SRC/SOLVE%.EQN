@@ -1,0 +1,16 @@
+% To insert in the file SOLVE.EQN %
+
+PROPERTY FORMMATH, {, FUNCTION (LEX1#, LEX2#, LEX3#, ex1#),
+  when atom (lex1#), hform (formname ('{), formname ('})) exit,
+  lex3#: false,
+  loop
+    lex2#: formmath (pop (lex1#)),
+    when atom (lex1#), lex3#: vform (lex3#, lex2#) exit,
+    lex3#: vform (lex3#, hform (lex2#, formname (þ*comma*))),
+  endloop,
+  lex3#: hform (formname ('{), lex3#, formname ('})),
+  replace3rd (lex3#, ex1#: truncate (first (lex3#), 2) + 1),
+  replace4th (lex3#, ex1#),
+ENDFUN $
+
+RDS () $

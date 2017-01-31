@@ -1,0 +1,753 @@
+% :encoding=IBM437:indentSize=8:tabSize=8:
+%----------------------------------------------------------------------------------------------------------------------------------
+  File: FORMMATH.MUS  13/03/89
+-----------------------------------------------------------------------------------------------------------------------------------
+Les structures utilis┌es par le formateur math┌matique
+------------------------------------------------------
+
+
+	- Une ligne -                                                          - Une forme -
+
+здддддбддддд©                                             здддддбддддд©
+Ё     Ё     Ё                                             Ё     Ё     Ё
+юддеддаддедды                                             юддеддаддедды
+   Ё     Ё                                                   Ё     Ё
+   Ё  зддаддбддддд©                                          Ё  зддаддбддддд©
+ long.Ё     Ё     Ё                                          V  Ё     Ё     Ё
+      юддеддаддедды                                             юддеддаддедды
+	 Ё     юддддддддддд©                                       Ё     Ё
+      зддаддбддддд©        Ё                                       Ё  зддаддбддддд©
+      Ё     Ё     Ё        Ё                                       H  Ё     Ё     Ё
+      юддеддаддедды        Ё                                          юддеддаддедды
+	 Ё     Ё           Ё                                             Ё     Ё
+	 Ё  зддаддбддддд©  Ё                                             G  зддаддбддддд©
+	O1  Ё     Ё     Ё  Ё                                                Ё     Ё     Ё
+	    юддеддаддедды  Ё                                                юддеддаддедды
+	       Ё     .     Ё                                                   Ё     Ё
+	       Ё     .     Ё                                                   D  зддаддбддддд©
+	      O2     .     Ё                                                      Ё     Ё     Ё
+		     .     Ё                                                      юддеддаддедды
+		     .     Ё                                                         Ё     юддддддддддддддддд©
+		     цддддды                                                      зддаддбддддд©              Ё
+		  зддаддбддддд©                                                   Ё     Ё     Ё              Ё
+		  Ё     Ё     Ё                                                   юддеддаддедды              Ё
+		  юддеддаддедды                                                      Ё     Ё                 Ё
+		     Ё     Ё                                                        L1  зддаддбддддд©        Ё
+		     Ё     Ё                                                            Ё     Ё     Ё        Ё
+		    On    nil                                                           юддеддаддедды        Ё
+											   Ё     Ё           Ё
+											  L2  зддаддбддддд©  Ё
+											      Ё     Ё     Ё  Ё
+       - Un objet On -                                                                        юддеддаддедды  Ё
+												 Ё     .     Ё
+здддддбддддд©          здддддбддддд©                                                            L3     .     Ё
+Ё     Ё     Ё    ou    Ё     Ё     Ё                                                                   .     Ё
+юддеддаддедды          юддеддаддедды                                                                   .     Ё
+   Ё     Ё                Ё     Ё                                                                      .     Ё
+ flag    юд symbole     flag зддаддбддддд©                                                             цддддды
+*PRINT-                      Ё     Ё     Ё                                                          зддаддбддддд©
+ESCAPE*                      юддеддаддедды                                                          Ё     Ё     Ё
+				Ё     Ё                                                             юддеддаддедды
+			    occurence юд symbole                                                       Ё     Ё
+												       Ё     Ё
+												      Ln    nil
+
+
+----------------------------------------------------------------------------------------------------------------------------------%
+% Les outils de manipulation des listes et des DTP-listes %
+% ------------------------------------------------------- %
+
+
+FUNCTION TPUSHFIRST (LEX1#, EX1#),
+  %                    Ё     юд L'objet ┘ accrocher au d┌but de la DTP-liste %
+  %                    юд La DTP-liste                                       %
+
+  REPLACEF (LEX1#, ADJOIN (EX1#, FIRST (LEX1#))),
+ENDFUN$
+
+
+MOVD ('TCONC, 'TPUSHLAST)$      % Pour accrocher un objet en fin de DTP-liste. Primitive de muLISP %
+
+
+FUNCTION LPUSHFIRST (LEX1#, LEX2#),
+  %                    Ё      юд La DTP-liste ┘ accrocher au d┌but de la DTP-liste LEX1# %
+  %                    юд La DTP-liste ┘ laquelle on doit se raccrocher                  %
+
+  REPLACER (REST (LEX2#), FIRST (LEX1#)),
+  REPLACEF (LEX1#, FIRST (LEX2#)),
+ENDFUN$
+
+
+FUNCTION LPUSHLAST (LEX1#, LEX2#),
+  %                   Ё      юд La DTP-liste ┘ accrocher ┘ la fin de la DTP-liste LEX1# %
+  %                   юд La DTP-liste ┘ laquelle on doit se raccrocher                  %
+
+  REPLACER (REST (LEX1#), FIRST (LEX2#)),
+  REPLACER (LEX1#, REST (LEX2#)),
+ENDFUN$
+
+
+FUNCTION REPLACE2ND (LEX1#, EX1#),
+  %                    Ё     юд L'objet ┘ placer en seconde position %
+  %                    юд La liste ┘ modifier                        %
+
+  REPLACEF (REST (LEX1#), EX1#),
+  LEX1#,
+ENDFUN$
+
+
+FUNCTION REPLACE3RD (LEX1#, EX1#),
+  %                    Ё     юд L'objet ┘ placer en troisi┼me position %
+  %                    юд La liste ┘ modifier                          %
+
+  REPLACEF (RREST (LEX1#), EX1#),
+  LEX1#,
+ENDFUN$
+
+
+FUNCTION REPLACE4TH (LEX1#, EX1#),
+  %                    Ё     юд L'objet ┘ placer en quatri┼me position %
+  %                    юд La liste ┘ modifier                          %
+
+  REPLACEF (RRREST (LEX1#), EX1#),
+  LEX1#
+ENDFUN$
+
+
+FUNCTION INSERTNODE (LEX1#, EX1#, EX2#),
+  %                    Ё     Ё    ----             %
+  %                    Ё     юд L'objet ┘ ins┌rer  %
+  %                    юд Le doublet ┘ modifier    %
+
+  EX2#: FIRST (LEX1#),
+  REPLACEF (LEX1#, EX1#),
+  REPLACER (LEX1#, ADJOIN (EX2#, REST (LEX1#))),
+ENDFUN$
+
+
+%---------------------------------------------------------------------------------------------------------------------------------%
+% Les outils de manipulation des lignes et des formes %
+% --------------------------------------------------- %
+
+
+FUNCTION FORMLISPAUX (LEX1#, LEX2#),
+  %                     Ё    -----                    %
+  %                     Ё      юд Le format r┌sultant %
+  %                     юд Liste ┘ formater ┘ la LISP %
+
+  LEX2#: FORMLISP (POP (LEX1#)),
+  LOOP
+    WHEN ATOM (LEX1#),
+      WHEN LEX1#,
+	HFORM (LEX2#, FORMSPACE (), FORMNAME ('\.), FORMSPACE (), FORMLISP (LEX1#)), EXIT,
+      LEX2# EXIT,
+    LEX2#: HFORM (LEX2#, FORMSPACE (), FORMLISP (POP (LEX1#))),
+  ENDLOOP
+ENDFUN$
+
+
+FUNCTION FORMLISP (LEX1#),
+  %                  юд Objet ┘ formater en liste LISP %
+
+  WHEN ATOM (LEX1#), FORMATOM (LEX1#), EXIT,
+  WHEN FIRST (LEX1#) EQ 'QUOTE, HFORM (FORMNAME ('\'), FORMLISP (FIRST (LEX1#))), EXIT,
+  FORMBRACKETS (FORMLISPAUX (LEX1#)),
+ENDFUN$
+
+
+FUNCTION LINESPACES (EX1#)
+  %                   Ё                                               %
+  %                   юд Le nombre d'espaces ┘ g┌n┌rer dans une ligne %
+
+  WHEN NOT POSITIVE (EX1#),
+    ADJOIN (1, TADJOIN (FALSE, ADJOIN (FALSE, '" "))) EXIT,
+  ADJOIN (EX1#, TADJOIN (FALSE, ЧLIST* (FALSE, EX1#, '" "))),
+ENDFUN$
+
+
+FUNCTION LININDENT (LEX1#, EX1#),
+  %                   Ё     юд L'indentation     %
+  %                   юд La ligne ┘ indenter     %
+
+  WHEN NOT POSITIVE (EX1#), LEX1# EXIT,
+  REPLACEF (LEX1#, FIRST (LEX1#) + EX1#),
+  LPUSHFIRST (REST (LEX1#), REST (LINESPACES (EX1#))),
+  LEX1#,
+ENDFUN$
+
+
+FUNCTION LINERIGHTCOMPL (LEX1#, EX1#, EX2#),
+  %                        Ё     Ё    ----                                                 %
+  %                        Ё     юд La largeur minimale que doit avoir la ligne            %
+  %                        юд La ligne ┘ compl┌ter avec des espaces ┘ droite si n┌cessaire %
+
+  EX2#: EX1# - FIRST (LEX1#),
+  WHEN NOT POSITIVE (EX2#), LEX1# EXIT,
+  REPLACEF (LEX1#, EX1#),
+  LPUSHLAST (REST (LEX1#), REST (LINESPACES (EX2#))),
+  LEX1#,
+ENDFUN$
+
+
+FUNCTION LINECONC (LEX1#, LEX2#),
+  %                  Ё      юд La ligne ┘ accrocher ┘ la fin de LEX1#         %
+  %                  юд La ligne ┘ la fin de laquelle on doit accrocher LEX2# %
+
+  REPLACEF (LEX1#, FIRST (LEX1#) + FIRST (LEX2#)),
+  LPUSHLAST (REST (LEX1#), REST (LEX2#)),
+  LEX1#,
+ENDFUN$
+
+
+FUNCTION FORMINDENT (LEX1#, EX1#, LEX2#),
+  %                    Ё     Ё    -----       %
+  %                    Ё     юд L'indentation %
+  %                    юд La forme ┘ indenter %
+
+  WHEN ATOM (LEX1#), FALSE EXIT,
+  WHEN NOT POSITIVE (EX1#), LEX1# EXIT,
+  REPLACE2ND (LEX1#, SECOND (LEX1#) + EX1#),
+  LEX2#: FIRST (CDDDDR (LEX1#)),
+  LOOP
+    WHEN EMPTY (LEX2#), LEX1# EXIT,
+    LININDENT (POP (LEX2#), EX1#),
+  ENDLOOP,
+ENDFUN$
+
+
+FUNCTION VFORM LEX1#,
+  %              юд La liste des formes ┘ assembler verticalement %
+
+  VFORMAUX (LEX1#),
+ENDFUN$
+
+
+FUNCTION VFORMAUX (LEX1#, LEX2#, LEX3#),
+  %                  Ё    -----  -----                                %
+  %                  юд La liste des formes ┘ assembler verticalement %
+
+  LEX2#: FALSE,
+  LOOP
+    % Recherche la premi┼re forme valable %
+    WHEN ATOM (LEX1#), EXIT,
+    WHEN NOT ATOM (LEX2#: POP (LEX1#)), EXIT,
+  ENDLOOP,
+  LOOP
+    % Assemble la forme suivante dans la liste ┘ la forme r┌sultante LEX2# %
+    WHEN ATOM (LEX1#), LEX2# EXIT,
+    BLOCK
+      WHEN ATOM (LEX3#: POP (LEX1#)), EXIT,
+      REPLACE4TH (LEX2#, FIRST (LEX2#) + FOURTH (LEX3#)),       % Ajuste la r┌f┌rence gauche de la forme r┌sultante %
+      REPLACEF (LEX2#, FIRST (LEX2#) + FIRST (LEX3#)),          % Ajuste la hauteur %
+      REPLACE2ND (LEX2#, MAX (SECOND (LEX2#), SECOND (LEX3#))), % Ajuste la largeur %
+      LPUSHLAST (CDDDDR (LEX2#), CDDDDR (LEX3#)),               % Assemble verticalement la forme courante ┘ la forme r┌sultante %
+    ENDBLOCK,
+  ENDLOOP
+ENDFUN$
+
+
+FUNCTION HFORM LEX1#,
+  %              юд La liste des formes ┘ assembler horizontalement %
+
+  HFORMAUX (LEX1#),
+ENDFUN$
+
+
+FUNCTION HFORMAUX (LEX1#, LEX2#, LEX3#, EX2#, EX3#, LEX4#, LEX5#, EX4#, LEX6#),
+  %                  Ё    -----  -----  ----  ----  -----  -----  ----  -----  %
+  %                  юд La liste des formes ┘ assembler horizontalement        %
+
+  LEX2#: FALSE,
+  LOOP
+    % Recherche la premi┼re forme valable %
+    WHEN ATOM (LEX1#), EXIT,
+    WHEN NOT ATOM (LEX2#: POP (LEX1#)), EXIT,
+  ENDLOOP,
+  LOOP
+    % Assemble la forme suivante dans la liste ┘ la forme r┌sultante LEX2# %
+    WHEN ATOM (LEX1#), LEX2# EXIT,
+    BLOCK
+      WHEN ATOM (LEX3#: POP (LEX1#)), EXIT,
+      EX2#: -FOURTH (LEX2#) + 1,                    % EX2# <-- nЬ relatif de la 1┼re ligne de la forme r┌sultante %
+      EX3#: -THIRD (LEX3#) + 1,                     % EX3# <-- nЬ relatif de la 1┼re ligne de la forme courante %
+      EX4#: SECOND (LEX2#),                         % EX4# <-- largeur actuelle de la forme r┌sultante %
+      LEX6#: CDDDDR (LEX2#),                        % Pour pouvoir mettre ┘ jour le REST de ce DTP node %
+      LEX4#: FIRST (LEX6#),                         % LEX4# <-- la liste des lignes de la forme r┌sultante %
+      LEX5#: FIRST (CDDDDR (LEX3#)),                % LEX5# <-- la liste des lignes de la forme courante %
+      REPLACEF (LEX2#,                              % Ajuste la hauteur de la nouvelle forme r┌sultante %
+		1 + MAX (FIRST (LEX2#) - FOURTH (LEX2#), FIRST (LEX3#) - THIRD (LEX3#)) - MIN (EX2#, EX3#)),
+      REPLACE2ND (LEX2#,                            % Ajuste la largeur %
+		  SECOND (LEX2#) + SECOND (LEX3#)),
+      BLOCK
+	% Ajuste les r┌f┌rences gauche et droite de la nouvelle forme r┌sultante %
+	WHEN EX3# < EX2#,
+	  REPLACE3RD (LEX2#, THIRD (LEX2#) + EX2# - EX3#),
+	  REPLACE4TH (LEX2#, FOURTH (LEX3#)), EXIT,
+	WHEN EX2# EQ EX3#,
+	  REPLACE4TH (LEX2#, FOURTH (LEX3#)), EXIT,
+	REPLACE4TH (LEX2#, FOURTH (LEX3#) + EX3# - EX2#),
+      ENDBLOCK,
+      LOOP
+	WHEN EX2# EQ EX3# OR EX2# < EX3#, EXIT,
+	INSERTNODE (LEX4#, LININDENT (POP (LEX5#), EX4#)),
+	BLOCK
+	  WHEN LEX4# EQ REST (LEX6#),               % Si on a ins┌r┌ avant le dernier node, celui ci n'est plus point┌ par le DTP %
+	    REPLACER (LEX6#, REST (LEX4#)), EXIT,
+	ENDBLOCK,
+	POP (LEX4#),
+	INCQ (EX3#),
+      ENDLOOP,
+      LOOP
+	WHEN EX3# EQ EX2# OR EX3# < EX2#, EXIT,
+	POP (LEX4#),
+	INCQ (EX2#),
+      ENDLOOP,
+      LOOP
+	WHEN ATOM (LEX4#),
+	  LEX4#: CDDDDR (LEX2#),
+	  LOOP
+	    WHEN ATOM (LEX5#), EXIT,
+	    TPUSHLAST (LEX4#, LININDENT (POP (LEX5#), EX4#)),
+	  ENDLOOP, EXIT,
+	WHEN ATOM (LEX5#), EXIT,
+	LINECONC (LINERIGHTCOMPL (POP (LEX4#), EX4#), POP (LEX5#)),
+      ENDLOOP,
+    ENDBLOCK,
+  ENDLOOP,
+ENDFUN$
+
+
+FUNCTION HFORMFUSION (LEX1#, LEX2#, LEX3#),
+  %                     Ё      Ё    -----                                       %
+  %                     Ё      юд La forme uniligne ┘ fusionner en bas ┘ droite %
+  %                     юд La forme qui doit recevoir la forme uniligne         %
+
+  WHEN ATOM (LEX1#) OR ATOM (LEX2#), HFORM (LEX1#, LEX2#) EXIT,
+  WHEN FOURTH (LEX1#) EQ FIRST (LEX1#) AND ONE (FIRST (LEX2#)),
+    LEX3#: FIRST (REST (CDDDDR (LEX1#))),           % La derni┼re ligne %
+    LINECONC (LEX3#, FFIRST (CDDDDR (LEX2#))),      % Rattache les deux lignes sans tenir compte de la largeur globale (fusion) %
+    LEX3#: FIRST (LEX3#) - SECOND (LEX1#),          % La diff┌rence de longueur %
+    BLOCK
+      WHEN POSITIVE (LEX3#),                        % Met ┘ jour la longueur de la forme globale %
+	REPLACE2ND (LEX1#, SECOND (LEX1#) + LEX3#), EXIT,
+    ENDBLOCK,
+    LEX1# EXIT,
+  HFORM (LEX1#, LEX2#),
+ENDFUN$
+
+
+%---------------------------------------------------------------------------------------------------------------------------------%
+% L'interface avec muMATH %
+% ----------------------- %
+
+
+FUNCTION FORMNAME (EX1#, EX2#, Ч*PRINT-ESCAPE*),
+  %                 Ё    ----  --------------- %
+  %                 юд Le symbole ┘ formater   %
+
+  EX2#: LENGTH (EX1#),
+  ЧLIST* (1, EX2#, 1, 1, TADJOIN (FALSE, ADJOIN (EX2#, TADJOIN (FALSE, ADJOIN (FALSE, EX1#))))),
+ENDFUN$
+
+
+FUNCTION FORMSPACE (),
+  % Renvoie un espace format┌ %
+
+  ЧLIST* (1, 1, 1, 1, TADJOIN (FALSE, ADJOIN (1, TADJOIN (FALSE, ADJOIN (FALSE, '" "))))),
+ENDFUN$
+
+
+FUNCTION ESCLENGTH (EX1#, Ч*PRINT-ESCAPE*),
+  %                  Ё    ---------------                                                                  %
+  %                  юд Le symbole dont on veut conna▄tre la longueur avec les ┌ventuels caract┼res escape %
+
+  Ч*PRINT-ESCAPE* : TRUE,
+  LENGTH (EX1#),
+ENDFUN$
+
+
+FUNCTION FORMATOM (EX1#, EX2#, EX3#, Ч*PRINT-ESCAPE*),
+  %                 Ё    ----  ----  --------------- %
+  %                 юд L'atome ┘ formater            %
+
+  WHEN NOT ATOM (EX1#), FALSE EXIT,
+  WHEN ZERO (EX1#), FORMNAME ("0"), EXIT,           % Car FORMPOINT ne peut pas traiter 0 (division par z┌ro) %
+  WHEN NAME (EX1#),
+    WHEN GET (EX1#, 'FORMMATH) EQ 'READABLE,        % Si le symbole est lisible directement bien qu'il contienne %
+      FORMNAME (EX1#) EXIT,                         % des break-characters. Ex : l'op┌rateur "==".               %
+    WHEN (EX2#: LENGTH (EX1#)) NEQ (EX3#: ESCLENGTH (EX1#)),
+      HFORM (IF (MUSIMP, FORMNAME (Ч\Ч)),
+	     ЧLIST* (1, EX3#, 1, 1, TADJOIN (FALSE, ADJOIN (EX3#, TADJOIN (FALSE, ADJOIN (TRUE, EX1#)))))) EXIT,
+    WHEN BREAKNAME (EX1#),
+      HFORM (IF (MUSIMP, FORMNAME (Ч\Ч)),
+	     ЧLIST* (1, EX2#, 1, 1, TADJOIN (FALSE, ADJOIN (EX2#, TADJOIN (FALSE, ADJOIN (FALSE, EX1#)))))) EXIT,
+    ЧLIST* (1, EX2#, 1, 1, TADJOIN (FALSE, ADJOIN (EX2#, TADJOIN (FALSE, ADJOIN (FALSE, EX1#))))), EXIT,
+  WHEN INTEGER (Ч*PRINT-POINT*),
+    FORMPOINT (EX1#, Ч*PRINT-POINT*, Ч*PRINT-BASE*), EXIT,
+  WHEN INTEGER (EX1#),
+    EX1#: ЧPACK* (EX1#),                            % Convertit l'entier en cha▄ne (gain de temps pour l'affichage des bignums) %
+    EX2#: LENGTH (EX1#),
+    ЧLIST* (1, EX2#, 1, 1, TADJOIN (FALSE, ADJOIN (EX2#, TADJOIN (FALSE, ADJOIN (FALSE, EX1#))))), EXIT,
+  FORMMATH (LIST ('/, NUM (EX1#), DEN (EX1#)), RBP, LBP),
+ENDFUN$
+
+
+FUNCTION FORMPOINT (EX1#, Ч*PRINT-POINT*, Ч*PRINT-BASE*, EX2#, EX3#, EX4#, EX5#, PRTSLASH),
+  %                  Ё                                   ----  ----  ----  ----  -------- %
+  %                  юд Le nombre ┘ formater                                              %
+
+  BLOCK
+    WHEN NOT INTEGER (Ч*PRINT-BASE*), Ч*PRINT-BASE* : 10, EXIT,
+  ENDBLOCK,
+  WHEN POSITIVE(Ч*PRINT-POINT*) OR ZERO(Ч*PRINT-POINT*),
+    EX1#: ЧPACK* (EX1#),                            % Convertit le nombre en cha▄ne en tenant compte de *PRINT-POINT* %
+    EX2#: LENGTH (EX1#),
+    ЧLIST* (1, EX2#, 1, 1, TADJOIN (FALSE, ADJOIN (EX2#, TADJOIN (FALSE, ADJOIN (FALSE, EX1#))))), EXIT,
+  EX2#: DEN(EX1#),
+  EX1#: NUM(EX1#),
+  EX3#: 0,
+  EX4#: ABS(EX1#),
+  EX5#: EX2#,
+  LOOP
+    WHEN EX4# < EX5#, EXIT,
+    INCQ (EX3#),
+    EX5#: EX5# * Ч*PRINT-BASE*,
+  ENDLOOP,
+  LOOP
+    DECQ (EX3#),
+    EX4#: EX4# * Ч*PRINT-BASE*,
+    WHEN EX4# EQ EX5# OR EX4# > EX5#, EXIT,
+  ENDLOOP,
+  WHEN ABS(EX3#) < 4,
+    FORMPOINT (EX1#/EX2#, -Ч*PRINT-POINT*, Ч*PRINT-BASE*) EXIT,
+  BLOCK
+    WHEN NEGATIVE (EX1#),
+      EX4#: -EX4# EXIT,
+  ENDBLOCK,
+  Ч*PRINT-POINT* : -Ч*PRINT-POINT*,
+  WHEN EX4# EQ EX5#,
+    FORMMATH (LIST ('^, Ч*PRINT-BASE*, EX3#), RBP, LBP) EXIT,
+  FORMMATH (LIST ('*, EX4#/EX5#, LIST ('^, Ч*PRINT-BASE*, EX3#)), RBP, LBP)
+ENDFUN$
+
+
+FUNCTION HFORMNAMEDUP (EX1#, EX2#, EX3#),
+  %                     Ё     Ё    ----                           %
+  %                     Ё     юд Le nombre de duplications        %
+  %                     юд Le symbole ┘ dupliquer horizontalement %
+
+  WHEN NOT POSITIVE (EX2#), FALSE EXIT,
+  EX3# : LENGTH (EX1#),
+  ЧLIST* (1, EX2# * EX3#, 1, 1, TADJOIN (FALSE,
+					 ADJOIN (EX2# * EX3#,
+						 TADJOIN (FALSE,
+							  ЧLIST* (FALSE, EX2#, EX1#))))),
+ENDFUN$
+
+
+FUNCTION VFORMNAMEDUP (EX1#, EX2#, LEX1#),
+  %                     Ё     Ё    -----                         %
+  %                     Ё     юд Le nombre de duplications       %
+  %                     юд Le symbole ┘ dupliquer verticalement  %
+
+  WHEN NOT POSITIVE (EX2#), FALSE EXIT,
+  LEX1#: FALSE,
+  LOOP
+    LEX1#: VFORM (LEX1#, FORMNAME (EX1#)),
+    WHEN ZERO (DECQ (EX2#)), LEX1# EXIT,
+  ENDLOOP,
+ENDFUN$
+
+
+FUNCTION FORMBRACKETS (LEX1#, LEX2#, LEX3#),
+  %                      Ё    -----  -----                  %
+  %                      юд Forme ┘ entourer de parenth┼ses %
+
+  WHEN ATOM (LEX1#), HFORM (FORMNAME (Ч*LPAR*), FORMNAME (Ч*RPAR*)), EXIT,
+  WHEN ONE (FIRST (LEX1#)), HFORM (FORMNAME (Ч*LPAR*), LEX1#, FORMNAME (Ч*RPAR*)), EXIT,
+  WHEN NOT FORMMATH, HFORM (FORMNAME (Ч*LPAR*), HFORMFUSION (LEX1#, FORMNAME (Ч*RPAR*))), EXIT,
+  LEX2#: VFORM (FORMNAME ('з),
+	       VFORMNAMEDUP ('Ё, FIRST (LEX1#) - 2),
+	       FORMNAME ('ю)),
+  REPLACE3RD (LEX2#, THIRD (LEX1#)),
+  REPLACE4TH (LEX2#, THIRD (LEX1#)),
+  LEX3#: VFORM (FORMNAME ('©),
+	       VFORMNAMEDUP ('Ё, FIRST (LEX1#) - 2),
+	       FORMNAME ('ы)),
+  REPLACE3RD (LEX3#, FOURTH (LEX1#)),
+  REPLACE4TH (LEX3#, FOURTH (LEX1#)),
+  HFORM (LEX2#, LEX1#, LEX3#),
+ENDFUN$
+
+
+FUNCTION FORMPAR (EX1#, EX2#),
+  %                Ё     юд La forme ┘ entourer de parenth┼ses si n┌cessaire %
+  %                юд Op┌rateur ou fonction                                  %
+
+  WHEN (GET ('RBP, EX1#) AND LBP > GET ('RBP, EX1#))
+       OR (GET ('LBP, EX1#) AND NOT (RBP < GET ('LBP, EX1#))),
+    FORMBRACKETS (EX2#), EXIT,
+  EX2#,
+ENDFUN$
+
+
+FUNCTION FORMFUNC (EX1#, LEX1#),
+  %                 Ё      юд Liste des arguments %
+  %                 юд Nom de la fonction         %
+
+  HFORM (FORMATOM (EX1#), FORMSPACE (), FORMLIST (LEX1#)),
+ENDFUN$
+
+
+FUNCTION FORMLIST (LEX1#, LEX2#),
+  %                  Ё    -----                                      %
+  %                  юд Liste d'arguments ┘ s┌parer par des virgules %
+
+  LEX2#: FALSE,
+  LOOP
+    WHEN ATOM (LEX1#), EXIT,
+    LEX2#: HFORM (LEX2#, FORMMATH (POP (LEX1#))),
+    WHEN ATOM (LEX1#), EXIT,
+    LEX2#: HFORM (LEX2#, FORMNAME ('", ")),
+  ENDLOOP,
+  FORMBRACKETS (LEX2#),
+ENDFUN$
+
+
+FUNCTION FORMSPC (EX1#, EX2#),
+  %                Ё     юд priorit┌ ┘ droite ou ┘ gauche %
+  %                юд Op┌rateur ou fonction               %
+
+  WHEN EX2# < 120 OR NOT ONE (ФLENGTH (EX1#)),
+    FORMSPACE (), EXIT,
+  FALSE,
+ENDFUN$
+
+
+FUNCTION FORMBODY (LEX1#, LEX2#, LEX3#),
+  %                  Ё    -----  -----          %
+  %                  юд Le corps de la fonction %
+
+  WHEN ATOM (LEX1#), FALSE, EXIT,
+  LEX2#: FALSE,
+  LOOP
+    LEX3#: FORMMATH (POP (LEX1#)),
+    WHEN ATOM (LEX1#),
+      VFORM (LEX2#, LEX3#) EXIT,
+    LEX2#: VFORM (LEX2#, HFORMFUSION (LEX3#, FORMNAME (Ч*COMMA*))),
+  ENDLOOP,
+ENDFUN$
+
+
+FUNCTION FORMDEFN (LEX1#, EX1#, EX2#, LEX2#),
+  %                  Ё     Ё     Ё    -----                 %
+  %                  Ё     Ё     юд ENDFUN ou ENDSUB        %
+  %                  Ё     юд FUNCTION ou SUBROUTINE        %
+  %                  юд (Param┼tres . corps de la fonction) %
+
+  BLOCK
+    WHEN NOT DISPLAY,
+      DISPLAY: TRUE, EXIT,
+    LEX2#: HFORM (FORMATOM (EX1#), FORMSPACE()),
+  ENDBLOCK,
+  EX1#: POP (LEX1#),
+  BLOCK
+    WHEN ATOM (EX1#) AND EX1#,
+      LEX2#: HFORM (LEX2#, FORMATOM (EX1#)), EXIT,
+    LEX2#: HFORM (LEX2#, FORMLIST (EX1#)),
+  ENDBLOCK,
+  LEX2#: HFORM (LEX2#, FORMNAME (Ч*COMMA*)),
+  VFORM (LEX2#, FORMINDENT (FORMBODY (LEX1#), Ч*INDENT*), FORMATOM (EX2#)),
+ENDFUN$
+
+
+FUNCTION LPAR (EX1#, EX2#),
+  % Appel┌ par FORMOPER %
+
+  WHEN NOT ATOM (EX2#) AND GET ('LBP, EX1#),
+    WHEN GET ('RBP, FIRST (EX2#)) AND GET ('LBP, EX1#) > GET ('RBP, FIRST (EX2#)), EXIT,
+    LPAR (FIRST (EX2#), SECOND (EX2#)), EXIT,
+ENDFUN$
+
+
+FUNCTION FORMOPER (EX1#, LEX1#, EX2#, EX3#, LEX2#),
+  %                 Ё      Ё    ----  ----  -----  %
+  %                 Ё      юд Liste des arguments  %
+  %                 юд Op┌rateur ou fonction       %
+
+  WHEN ATOM (LEX1#),
+    FORMFUNC (EX1#, LEX1#), EXIT,
+  EX2#: POP (LEX1#),
+  WHEN ATOM (LEX1#),
+    WHEN GET ('RBP, EX1#),
+      WHEN NOT ATOM (EX2#) AND GET ('LBP, FIRST (EX2#)),
+	HFORM (FORMATOM (EX1#), FORMSPC (EX1#, GET ('RBP, EX1#)), FORMBRACKETS (FORMMATH (EX2#))), EXIT,
+      HFORM (FORMATOM (EX1#), FORMSPC (EX1#, GET ('RBP, EX1#)), FORMMATH (EX2#, GET ('RBP, EX1#))), EXIT,
+    WHEN GET ('LBP, EX1#),
+      HFORM (FORMMATH (EX2#, 0, GET ('LBP, EX1#)), FORMSPC (EX1#, GET ('LBP, EX1#)), FORMATOM (EX1#)), EXIT,
+    FORMFUNC (EX1#, ADJOIN (EX2#, LEX1#)), EXIT,
+  WHEN GET ('RBP, EX1#) AND GET ('LBP, EX1#),
+    LEX2#: FORMMATH (EX2#, 0, GET ('LBP, EX1#)),
+    LOOP
+      EX3#: POP (LEX1#),
+      BLOCK
+	WHEN EX1# EQ '* AND NOT (NAME (EX2#) AND NOT ATOM (EX3#)
+				AND GET ('LBP, FIRST (EX3#))
+				AND (GET ('RBP, '*) > GET ('LBP, FIRST (EX3#))
+				     OR LPAR (FIRST (EX3#), SECOND (EX3#)))),
+	  LEX2#: HFORM (LEX2#, FORMSPACE ()), EXIT,
+	LEX2#: HFORM (LEX2#, FORMSPC (EX1#, GET ('LBP, EX1#)), FORMATOM (EX1#), FORMSPC (EX1#, GET ('RBP, EX1#))),
+      ENDBLOCK,
+      EX2#: EX3#,
+      WHEN ATOM (LEX1#), EXIT,
+      LEX2#: HFORM (LEX2#, FORMMATH (EX2#, GET ('RBP, EX1#), GET ('LBP, EX1#))),
+    ENDLOOP,
+    HFORM (LEX2#, FORMMATH (EX2#, GET ('RBP, EX1#))), EXIT,
+  FORMFUNC (EX1#, ADJOIN (EX2#, LEX1#)),
+ENDFUN$
+
+
+FUNCTION FORMMATH (EX1#, RBP, LBP, LEX1#, Ч*EXACT-MODE*),
+  %                 Ё     Ё    Ё   -----  -------------               %
+  %                 Ё     Ё    юд Coefficient de l'op┌rateur ┘ gauche %
+  %                 Ё     юд Coefficient de l'op┌rateur ┘ droite      %
+  %                 юд L'objet ┘ formater                             %
+
+  Ч*EXACT-MODE* : TRUE,
+  BLOCK
+    WHEN INTEGER (RBP), EXIT,
+    RBP: 0,
+  ENDBLOCK,
+  BLOCK
+    WHEN INTEGER (LBP), EXIT,
+    LBP: 0,
+  ENDBLOCK,
+  WHEN ATOM (EX1#),
+    FORMATOM (EX1#), EXIT,
+  LEX1#: EX1#,
+  EX1#: POP (LEX1#),
+  WHEN ATOM (EX1#),
+    WHEN GET ('FORMMATH, EX1#) AND APPLY (GET ('FORMMATH, EX1#), LIST (LEX1#)), EXIT,
+    FORMPAR (EX1#, FORMOPER (EX1#, LEX1#)), EXIT,
+  WHEN ATOM (FIRST (EX1#)),
+    EX1#: HFORM (FORMNAME ('WHEN), FORMSPACE (), FORMMATH (EX1#)),
+    WHEN EMPTY (LEX1#),
+      HFORM (EX1#, FORMSPACE (), FORMNAME ('EXIT)), EXIT,
+    EX1#: HFORM (EX1#, FORMNAME (Ч*COMMA*)),
+    WHEN EMPTY (REST (LEX1#)) AND ATOM (FIRST (LEX1#)),
+      HFORM (EX1#, FORMSPACE (), FORMMATH (FIRST (LEX1#)), FORMSPACE (), FORMNAME ('EXIT)), EXIT,
+    VFORM (EX1#, FORMINDENT (HFORMFUSION (FORMBODY (LEX1#), HFORM (FORMSPACE (), FORMNAME ('EXIT))), Ч*INDENT*)), EXIT,
+  VFORM (FORMNAME ('BLOCK), FORMINDENT (FORMBODY (ADJOIN (EX1#, LEX1#)), Ч*INDENT*), FORMNAME ('ENDBLOCK)),
+ENDFUN$
+
+
+FUNCTION PRTFORM (LEX1#, Ч*PRINT-ESCAPE*, LEX2#, LEX3#, EX1#),
+  %                 Ё    ---------------  -----  -----  ----            %
+  %                 юд La forme ┘ afficher                              %
+  % Fonction permettant d'┌crire dans un fichier, sur imprimante etc... %
+
+  WHEN ATOM (LEX1#), LEX1# EXIT,
+  EX1#: SPACES (),
+  LEX2#: FIRST (CDDDDR (LEX1#)),
+  LOOP
+    LEX3#: FIRST (REST (POP (LEX2#))),
+    LOOP
+      WHEN EMPTY (LEX3#), EXIT,
+      FUNCALL ('(LAMBDA (*PRINT-DOWNCASE* EX1# EX2#)
+		   (SETQ EX2# (POP LEX3#))
+		   ( ((SETQ *PRINT-ESCAPE* (FIRST EX2#))
+			 (SETQ *PRINT-DOWNCASE*) ) )
+		   ((ATOM (SETQ EX2# (REST EX2#)))
+		     (PRINT EX2#) )
+		   (SETQ EX1# (POP EX2#))
+		   (LOOP
+		     (PRINT EX2#)
+		     ((NOT (POSITIVE (DECQ EX1#)))) ) ), Ч*PRINT-DOWNCASE*),
+    ENDLOOP,
+    WHEN EMPTY (LEX2#), LEX1#, EXIT,
+    NEWLINE (),
+    SPACES (EX1#)
+  ENDLOOP,
+  WHEN PRTFORMNEWLINE,                              % Si changement de ligne apr┼s affichage de forme %
+    NEWLINE(), EXIT,
+ENDFUN$
+
+
+FUNCTION PRTMATH (EX1#, LEX1#),
+  %                Ё    -----                 %
+  %                юд L'expression ┘ formater %
+
+  LEX1#: FORMMATH (EX1#),
+  WHEN Ч*PRINTER-ECHO* OR Ч*OUTPUT-FILE*,
+    PRTFORM (LEX1#), EXIT,
+  WHEN SHOWFORM AND SHOWFORM (LEX1#, TRUE, TERPRI, SHOWSTATCOLOR) EXIT,
+  PRTFORM (LEX1#),
+ENDFUN$
+
+
+Ч*INDENT* : 2$
+
+Ч*PRINT-DOWNCASE* : TRUE$
+
+
+%---------------------------------------------------------------------------------------------------------------------------------%
+% Les propri┌t┌s de formatage %
+% --------------------------- %
+
+
+PROPERTY FORMMATH, CATCH, FUNCTION (LEX1#),
+  VFORM (HFORM (FORMNAME ('CATCH), FORMSPACE (), FORMNAME (Ч*LPAR*), FORMMATH (POP (LEX1#)), FORMNAME (Ч*COMMA*)),
+	 FORMINDENT (HFORMFUSION (FORMBODY (LEX1#), FORMNAME (Ч*RPAR*)), Ч*INDENT*) ),
+ENDFUN$
+
+
+PROPERTY FORMMATH, ЧUNWIND-PROTECT, FUNCTION (LEX1#),
+  VFORM (HFORM (FORMNAME ('UNWIND-PROTECT), FORMSPACE (), FORMNAME (Ч*LPAR*)),
+	 FORMINDENT (HFORMFUSION (FORMBODY (LEX1#), FORMNAME (Ч*RPAR*)), Ч*INDENT*) ),
+ENDFUN$
+
+
+PROPERTY FORMMATH, COND, FUNCTION (LEX1#),
+  VFORM (HFORM (FORMNAME ('COND), FORMSPACE (), FORMNAME (Ч*LPAR*)),
+	 FORMINDENT (HFORMFUSION (FORMBODY (LEX1#), FORMNAME (Ч*RPAR*)), Ч*INDENT*) ),
+ENDFUN$
+
+
+PROPERTY FORMMATH, LOOP, FUNCTION (LEX1#),
+  VFORM (FORMNAME ('LOOP),
+	 FORMINDENT (FORMBODY (LEX1#), Ч*INDENT*),
+	 FORMNAME ('ENDLOOP) ),
+ENDFUN$
+
+
+PROPERTY FORMMATH, NLAMBDA, FUNCTION (LEX1#, FORMMATH, Ч*PRINT-DOWNCASE*),
+  FORMDEFN (LEX1#, 'SUBROUTINE, 'ENDSUB),
+ENDFUN$
+
+
+PROPERTY FORMMATH, LAMBDA, FUNCTION (LEX1#, FORMMATH, Ч*PRINT-DOWNCASE*),
+  FORMDEFN (LEX1#, 'FUNCTION, 'ENDFUN),
+ENDFUN$
+
+
+PROPERTY FORMMATH, IDENTITY, FUNCTION (LEX1#),
+  FORMMATH (FIRST (LEX1#)),
+ENDFUN$
+
+
+PROPERTY FORMMATH, QUOTE, FUNCTION (LEX1#, MUSIMP),
+  %                                       ------                                                   %
+  %                                         юд Pour utiliser \ et pas Ч\ devant un symbole sp┌cial %
+  HFORM (FORMNAME ('\'), FORMLISP (FIRST (LEX1#))),
+ENDFUN$
+
+
+PROPERTY FORMMATH, -, FUNCTION (LEX1#),
+  WHEN ATOM (REST (LEX1#)),
+    WHEN LBP > 130,
+      FORMBRACKETS (HFORM (FORMNAME ('-), FORMMATH (FIRST (LEX1#), 130))), EXIT,
+    HFORM (FORMNAME ('-), FORMMATH (FIRST (LEX1#), 130)), EXIT,
+ENDFUN$
+
+
+RDS () $

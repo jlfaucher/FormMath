@@ -1,0 +1,30 @@
+# https://en.wikipedia.org/wiki/Code_page_437
+# Code page 437 is the character set of the original IBM PC (personal computer), or DOS.
+encoding=CP-437
+
+# muLISP source files must remain CRLF
+*               text eol=crlf
+
+*.bash          text eol=lf
+*.bat           text eol=crlf
+*.bin           binary
+*.BIN           binary
+*.bmp           binary
+*.csh           text eol=lf
+*.doc           binary
+*.gif           binary
+*.gz            binary
+*.ico           binary
+*.in            text eol=lf
+*.jpg           binary
+*.ksh           text eol=lf
+*.mwp           binary
+*.odt           binary
+*.png           binary
+*.res           binary
+*.sh            text eol=lf
+*.tar           binary
+*.tgz           binary
+*.wav           binary
+*.zip           binary
+
