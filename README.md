@@ -100,6 +100,11 @@ Demo
 
 ![Demo 1](DEMO/formmath-demo1.png)
 
+    solve(a x^2 + b x + c == 0, x);
+    sigma(j^2 3^j, j, 1, m);                    # Result is more than 80 characters --> scrolling activated
+
+![Demo 2](DEMO/formmath-demo2.png)
+
 
 [dosbox]: https://www.dosbox.com/wiki/Main_Page "DOSBox"
 [mulisp]: http://www.edm2.com/index.php/MuLISP "muLISP"
