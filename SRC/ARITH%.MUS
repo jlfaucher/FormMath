@@ -1,4 +1,4 @@
-% :encoding=IBM437:indentSize=8:tabSize=8:
+% :encoding=IBM437:indentSize=8:tabSize=8: %
 % To insert in the file ARITH.MUS %
 
 %---------------------------------------------------------------------------------------------------------------------------------%
@@ -138,5 +138,3 @@ PROPERTY FORMMATH, û, FUNCTION (LEX1#,
     REPLACE4TH (LEX1#, EX2# + 1),
     LEX1#, EXIT,
 ENDFUN$
-
-RDS () $

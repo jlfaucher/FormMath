@@ -1,3 +1,4 @@
+% :encoding=IBM437:indentSize=8:tabSize=8: %
 % To insert in the file SOLVE.EQN %
 
 PROPERTY FORMMATH, {, FUNCTION (LEX1#, LEX2#, LEX3#, ex1#),
@@ -12,5 +13,3 @@ PROPERTY FORMMATH, {, FUNCTION (LEX1#, LEX2#, LEX3#, ex1#),
   replace3rd (lex3#, ex1#: truncate (first (lex3#), 2) + 1),
   replace4th (lex3#, ex1#),
 ENDFUN $
-
-RDS () $

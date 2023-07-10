@@ -1,4 +1,4 @@
-% :encoding=IBM437:indentSize=8:tabSize=8:
+% :encoding=IBM437:indentSize=8:tabSize=8: %
 % To insert in the file ARRAY.ARI %
 
 PROPERTY FORMMATH, [, FUNCTION (LEX1#, lex2#),
@@ -36,6 +36,3 @@ ENDFUN $
 PROPERTY FORMMATH, SUBSCR, FUNCTION (LEX1#),
   hform (formmath (pop (lex1#)), formmath (adjoin ('[, lex1#))),
 ENDFUN $
-
-
-RDS() $
