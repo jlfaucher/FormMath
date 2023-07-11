@@ -117,9 +117,7 @@ Demo
 
 ### Demo 3
 
-<video src="DEMO/formmath-demo3.mov" placeholder="DEMO/formmath-demo3.mov" autoplay loop controls title="Demo 3">
-    Sorry, your browser doesn't support HTML 5 video.
-</video>
+https://github.com/jlfaucher/FormMath/assets/3055606/1a454fc1-129d-45e5-9d3f-ee3246d1a242
 
     lineqn ([a^2 x + y == 3,  x - y == 2], [x, y]);
     int (x^2 c ^ (a x + b),  x);
