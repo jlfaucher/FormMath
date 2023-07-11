@@ -21,6 +21,7 @@ encoding=CP-437
 *.in            text eol=lf
 *.jpg           binary
 *.ksh           text eol=lf
+*.mov           binary
 *.mp4           binary
 *.mwp           binary
 *.odt           binary

@@ -117,7 +117,7 @@ Demo
 
 ### Demo 3
 
-<video src="DEMO/formmath-demo3.mp4" placeholder="DEMO/formmath-demo3.mp4" autoplay loop controls title="Demo 3">
+<video src="DEMO/formmath-demo3.mov" placeholder="DEMO/formmath-demo3.mov" autoplay loop controls title="Demo 3">
     Sorry, your browser doesn't support HTML 5 video.
 </video>
 
