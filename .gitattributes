@@ -5,11 +5,14 @@ encoding=CP-437
 # muLISP source files must remain CRLF
 *               text eol=crlf
 
+*.avi           binary
 *.bash          text eol=lf
 *.bat           text eol=crlf
 *.bin           binary
 *.BIN           binary
 *.bmp           binary
+*.com           binary
+*.COM           binary
 *.csh           text eol=lf
 *.doc           binary
 *.gif           binary
@@ -18,11 +21,14 @@ encoding=CP-437
 *.in            text eol=lf
 *.jpg           binary
 *.ksh           text eol=lf
+*.mp4           binary
 *.mwp           binary
 *.odt           binary
 *.png           binary
 *.res           binary
 *.sh            text eol=lf
+*.sys           binary
+*.SYS           binary
 *.tar           binary
 *.tgz           binary
 *.wav           binary

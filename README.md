@@ -14,7 +14,7 @@ FormMath is an extension for muLISP-87 (16 bits), that I implemented in 1989.
 It's a formatter which displays in 2D the mathematical expressions calculated by muMATH.
 When the expression doesn't fit the 25x80 DOS screen, an horizontal/vertical scrolling is activated.
 
-Tested with muLISP-87 IBM PC MS-DOS Version 6.03 (07/12/88), using [DOSBox][dosbox] or [vDosPlus][vdosplus].
+Tested with muLISP-87 IBM PC MS-DOS Version 6.03 (07/12/88), using [DOSBox-X][dosbox-x] or [DOSBox][dosbox] or [vDosPlus][vdosplus].
 
 Source files
 ------------
@@ -45,6 +45,10 @@ Copy your executable `MULISP.COM` in the directory `DIR`.
 Copy the files `EXTSRC/EXTMLISP.BIN`, `EXTSRC/EXTMLISP.LSP`, `EXTSRC/FORMMATH.MUS` in the directory `DIR`. 
 
 Copy your muMATH source files in the directory `DIR`.  
+Update July 10, 2023: [Doesn't work](https://github.com/jlfaucher/FormMath/issues/1)
+with the official sources of MuMath-83.  
+I can't publish the modified sources because they are based on files that are
+copyrighted by The Soft Warehouse.
 
 Insert the contents of the file `SRC/ARITH%.MUS` in the file `DIR/ARITH.MUS`, before the demo section.   
 
@@ -91,6 +95,10 @@ Then execute this sequence of commands (the indentation is used to better visual
 Demo
 ----
 
+### Demo 1
+
+![Demo 1](DEMO/formmath-demo1.png)
+
     vDosPlus                                    # Launch the emulator vDosPlus
     chcp 437                                    # Select the code page 437
     mulisp mumath                               # Launch muMATH
@@ -98,15 +106,33 @@ Demo
     v2:expand(v1);
     v3:sqrt(v2);
 
-![Demo 1](DEMO/formmath-demo1.png)
-
-    solve(a x^2 + b x + c == 0, x);
-    sigma(j^2 3^j, j, 1, m);                    # Result is more than 80 characters --> scrolling activated
+### Demo 2
 
 ![Demo 2](DEMO/formmath-demo2.png)
 
+    solve(a x^2 + b x + c == 0, x);
+
+    % Result is more than 80 characters --> scrolling activated %
+    sigma(j^2 3^j, j, 1, m);
+
+### Demo 3
+
+<video src="DEMO/formmath-demo3.mp4" placeholder="DEMO/formmath-demo3.mp4" autoplay loop controls title="Demo 3">
+    Sorry, your browser doesn't support HTML 5 video.
+</video>
+
+    lineqn ([a^2 x + y == 3,  x - y == 2], [x, y]);
+    int (x^2 c ^ (a x + b),  x);
+    int (x^2 / (x^2 - x + 1),  x);
+
+    % Result is more than 80 characters --> scrolling activated %
+    idmat (30);
+    trgexpd (solve (expd ((x-1)(x-2)(x+4)), x), -7);
+    solve(a x^3 + b x^2 + c x + d == 0, x);
+
 
 [dosbox]: https://www.dosbox.com/wiki/Main_Page "DOSBox"
+[dosbox-x]: https://dosbox-x.com/ "DOSBox-X"
 [mulisp]: http://www.edm2.com/index.php/MuLISP "muLISP"
 [mumath]: https://en.wikipedia.org/wiki/MuMATH "muMATH"
 [musimp]: http://hopl.info/showlanguage2.prx?exp=2265 "muSIMP"
