@@ -128,6 +128,25 @@ https://github.com/jlfaucher/FormMath/assets/3055606/1a454fc1-129d-45e5-9d3f-ee3
     trgexpd (solve (expd ((x-1)(x-2)(x+4)), x), -7);
     solve(a x^3 + b x^2 + c x + d == 0, x);
 
+Memories
+--------
+
+In memory of [Albert Rich](https://math.unm.edu/~aca/ACA/Memoriam/Albert_Rich/).
+
+
+muMATH / muSIMP System for Apple II with SoftCard and CP/M-80.  
+French magazine in 1984.  
+Symbolic calculator HP-28S in 1988...  
+
+.
+<img src="MEMORIES/muMATH1.JPG" width="100%">
+
+.
+<img src="MEMORIES/muMATH2.JPG" width="100%">
+
+.
+<img src="MEMORIES/muMATH3.JPG" width="100%">
+
 
 [dosbox]: https://www.dosbox.com/wiki/Main_Page "DOSBox"
 [dosbox-x]: https://dosbox-x.com/ "DOSBox-X"
