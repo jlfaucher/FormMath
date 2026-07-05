@@ -3,6 +3,10 @@ FormMath for muLISP-87/muMATH
 
 Software from the 80s.
 
+<div align="center">
+<img src="DEMO/muMath_muSimp.png" alt="The repositories" width="40%">
+</div>
+
 Description
 -----------
 
